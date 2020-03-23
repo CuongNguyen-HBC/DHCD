@@ -32,14 +32,14 @@ class DanhSachCauHoi extends Model{
         const connect = await this.pool.connect()
         const pool = await connect.request()
         pool.input('cauhoi',mssql.Int,id)
-        const result = await pool.query("SELECT b.Ma_Dai_Bieu, b.Ten_Dai_Bieu FROM BieuQuyetCauHoi a , DanhSachDaiBieu b where BieuQuyet = 1 and CauHoi = @cauhoi and a.Ma_Dai_Bieu = b.Ma_Dai_Bieu")
+        const result = await pool.query("SELECT a.stt,b.Ma_Dai_Bieu, b.Ten_Dai_Bieu FROM BieuQuyetCauHoi a , DanhSachDaiBieu b where BieuQuyet = 1 and CauHoi = @cauhoi and a.Ma_Dai_Bieu = b.Ma_Dai_Bieu order by stt")
         return result.recordset
     }
     async KhongTanThanh(id){
         const connect = await this.pool.connect()
         const pool = await connect.request()
         pool.input('cauhoi',mssql.Int,id)
-        const result = await pool.query("SELECT b.Ma_Dai_Bieu, b.Ten_Dai_Bieu FROM BieuQuyetCauHoi a , DanhSachDaiBieu b where BieuQuyet = 0 and CauHoi = @cauhoi and a.Ma_Dai_Bieu = b.Ma_Dai_Bieu")
+        const result = await pool.query("SELECT a.stt,b.Ma_Dai_Bieu, b.Ten_Dai_Bieu FROM BieuQuyetCauHoi a , DanhSachDaiBieu b where BieuQuyet = 0 and CauHoi = @cauhoi and a.Ma_Dai_Bieu = b.Ma_Dai_Bieu order by stt")
         return result.recordset
     }
     async insertBieuQuyet(madaibieu,id,bieuquyet){

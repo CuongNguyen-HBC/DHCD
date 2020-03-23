@@ -16,5 +16,7 @@ module.exports = (app) => {
     app.route('/ajax/ma-uy-quyen')
     .get(admincontroller.getMaUyQuyen)
     app.route('/test')
-    .get(admincontroller.test)
+    .get((req,res) => {
+        res.render('admin/mc-script')
+    })
 }

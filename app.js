@@ -21,8 +21,8 @@ const io = require('socket.io')(app.listen(process.env.APP_PORT || 80 ,function(
 }))
 io.on('connection',function(socket){
     console.log('ok')
-    socket.on('room',function(msg){
-        io.emit('hello')
-        console.log('room')
+    socket.on('page',function(msg){
+        io.emit('page','okok')
+        console.log(msg)
     })
 })
