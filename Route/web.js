@@ -1,0 +1,20 @@
+const  admincontroller = require(`${path}/Controllers/AdminController`)
+module.exports = (app) => {
+    app.route('/')
+    .get(admincontroller.Home)
+    app.route('/check-in')
+    .get(admincontroller.CheckIn)
+    .post(admincontroller.pCheckIn)
+    app.route('/thu-moi')
+    .get(admincontroller.ThuMoi)
+    app.route('/bieu-quyet/:id')
+    .get(admincontroller.BieuQuyet)
+    .post(admincontroller.pBieuQuyet)
+    // AJAX
+    app.route('/ajax/ma-co-dong')
+    .get(admincontroller.getMaCoDong)
+    app.route('/ajax/ma-uy-quyen')
+    .get(admincontroller.getMaUyQuyen)
+    app.route('/test')
+    .get(admincontroller.test)
+}

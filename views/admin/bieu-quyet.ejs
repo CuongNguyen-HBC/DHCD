@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="../../materialize/css/materialize.min.css">
+    <link rel="stylesheet" href="../../materialize/css/customer.css">
+    <link rel="stylesheet" href="../../materialize/css/datatable.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <style>
+    nav {
+      background-color: #00a1e4;
+    }
+    
+  </style>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>HBC</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a class="btn-sidenav" id="trigsidenav"><i class="material-icons">menu</i></a></li>
+        </ul>
+      </div>
+    </nav>
+    <button data-target="slide-out" class="sidenav-trigger" hidden><i class="material-icons">menu</i></button>
+  <ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="https://photo.techrum.vn/images/2019/07/15/490IXX.jpg"/>
+      </div>
+      <a href="#user"><img class="circle" ></a>
+      <a href="#name"><span class="white-text name">Nguyễn Hải Cường</span></a>
+      <a href="#email"><span class="white-text email">cuong.nguyenhai@hbc.com.vn</span></a>
+    </div></li>
+    <!-- <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li> -->
+    <li><a href="../check-in">Đón tiếp đại biểu</a></li>
+    <li><a href="../thu-moi">Thư mời</a></li>
+    
+    <li><a href="../bau-cu">Bầu cử</a></li>
+    
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Subheader</a></li>
+    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  </ul>
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col s12 card">
+                <div class="card-header"><h5>Ban kiểm phiếu bầu cử</h5></div>
+                <div class="card-content">
+                    <div class="row">
+                        <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
+                            <li class="tab"><a  class="active" href="#test1">Tán thành</a></li>
+                            <li class="tab"><a href="#test2">Không tán thành</a></li>
+                            
+                          </ul>
+                        
+                       
+                        <div id="test1" class="col s12"> 
+                            <form method="post">
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">search</i>
+                                    <input id="" type="text" class="validate" name="Ma_Dai_Bieu">
+                                    <label for="">Scan phiếu biểu quyết tán thành</label>
+                                    <button name="options" value="1" hidden></button>
+                                </div>    
+                            </form>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Phiếu đại biểu</th>
+                                        <th>Đại Biểu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i = 0 ; i < tanthanh.length ; i++) {  %>
+                                      <tr>
+                                        <td><%= tanthanh[i].Ma_Dai_Bieu %></td>
+                                        <td><%= tanthanh[i].Ten_Dai_Bieu %></td>
+                                      </tr>
+                                      <% }%>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>     
+                          <div id="test2" class="col s12">
+                            <form method="post">
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">search</i>
+                                    <input id="" type="text" class="validate" name="Ma_Dai_Bieu">
+                                    <label for="">Scan phiếu biểu quyết không tán thành</label>
+                                    <button name="options" value="0" hidden></button>
+                                </div>    
+                            </form>  
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Phiếu đại biểu</th>
+                                        <th>Đại Biểu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i = 0 ; i < khongtanthanh.length ; i++) {  %>
+                                      <tr>
+                                        <td><%= khongtanthanh[i].Ma_Dai_Bieu %></td>
+                                        <td><%= khongtanthanh[i].Ten_Dai_Bieu %></td>
+                                      </tr>
+                                      <% }%>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal1" class="modal" style="height: 300px;">
+      <div class="modal-content center-align">
+    <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <h5 class="center-align"><Loading class="loading">loading...</Loading></h5>
+  </div>
+  </div>
+  <button data-target="modal1" class="btn modal-trigger" style="display: none;">Modal</button>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="../../materialize/js/jquery-3.4.1.min.js"></script>
+    <script src="../../materialize/js/materialize.min.js"></script>
+    <script src="../../materialize/js/datatable.min.js"></script>
+    <script src="../../materialize/js/customer.js"></script>
+    <script src="../../materialize/js/scan.js"></script>
+    <script>
+        $('table').DataTable()
+    </script>
+  </body>
+</html>
