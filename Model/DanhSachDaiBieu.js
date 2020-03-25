@@ -72,5 +72,11 @@ class DanhSachDaiBieu extends Model{
         request.input('madaibieu',mssql.NVarChar(200),madaibieu)
         request.query(`delete from ChiTietDaiBieu where Ma_Dai_Bieu = @madaibieu and Ma_Co_Dong = @macodong`)
     }
+    async ThongKeDaiBieu(){
+        const connect = await this.pool.connect()
+        const request = await connect.request()
+        const result =await request.query(`SELECT COUNT(*) as 'sodaibieu', SUM(TongCP) as 'sophieu' from ${this.table}`)
+        return result.recordset
+    }
 }
 module.exports =  DanhSachDaiBieu

@@ -2,8 +2,8 @@ const excel = require('exceljs')
 const mssql = require('mssql')
 const config = {
     user:process.env.DB_USER || 'sa',
-    password:process.env.DB_PASSWORD || '*hbc123',
-    server:process.env.DB_HOST || '192.168.3.4',
+    password:process.env.DB_PASSWORD || 'Cu@ng123',
+    server:process.env.DB_HOST || '127.0.0.1',
     port:parseInt(process.env.DB_PORT,10) || 1433,
     database:process.env.DB_NAME || 'DaiHoiCoDong' ,
     options:{

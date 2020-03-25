@@ -11,42 +11,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-  <style>
-    nav {
-      background-color: #00a1e4;
-  
-    }
-    
-  </style>
-  <body>
-    <nav>
-        <div class="nav-wrapper">
-          <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>HBC</a>
-          <ul class="right hide-on-med-and-down">
-            <li><a class="btn-sidenav" id="trigsidenav"><i class="material-icons">menu</i></a></li>
-          </ul>
-        </div>
-      </nav>
-      <button data-target="slide-out" class="sidenav-trigger" hidden><i class="material-icons">menu</i></button>
-    <ul id="slide-out" class="sidenav">
-      <li><div class="user-view">
-        <div class="background">
-          <img src="https://photo.techrum.vn/images/2019/07/15/490IXX.jpg"/>
-        </div>
-        <a href="#user"><img class="circle" ></a>
-        <a href="#name"><span class="white-text name">Nguyễn Hải Cường</span></a>
-        <a href="#email"><span class="white-text email">cuong.nguyenhai@hbc.com.vn</span></a>
-      </div></li>
-      <!-- <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li> -->
-      <li><a href="./check-in">Đón tiếp đại biểu</a></li>
-      <li><a href="./thu-moi">Thư mời</a></li>
-      <!-- <li><a href="./bieu-quyet">Biểu quyết</a></li> -->
-      <li><a href="./bau-cu">Bầu cử</a></li>
-      
-      <li><div class="divider"></div></li>
-      <li><a class="subheader">Subheader</a></li>
-      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-    </ul>
+  <%- include('../header.ejs')  %>
     
     <div class="container-fluid ">
       <div class="row">
@@ -62,15 +27,20 @@
               <div id="test1" class="col s12">
                 <div class="row">
                     <div class="col s12 ">
-                      <div class="input-field col s6">
+                      <div class="input-field col s4">
                         <i class="material-icons prefix">search</i>
                         <input id="scanbarcode" type="text" class="validate">
                         <label for="scanbarcode">Scan phiếu cổ đông</label>
                       </div>
-                      <div class="input-field col s3">
+                      <div class="input-field col s4">
                         <i class="material-icons prefix">search</i>
                         <input id="scanuyquyen" type="text" class="validate">
                         <label for="scanuyquyen">Scan phiếu ủy quyền</label>
+                      </div>
+                      <div class="input-field col s4">
+                        <i class="material-icons prefix">search</i>
+                        <input id="offline" type="text" class="validate">
+                        <label for="offline">Scan phiếu dự đại hội từ xa</label>
                       </div>
                       <form method="post">
                         <div class="col s12 card">
@@ -228,14 +198,18 @@
     <script src="../materialize/js/customer.js"></script>
     <script src="../materialize/js/scan.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
     <script>
      scanCoDong()
-   
      $('.checked').DataTable()
-      $(document).ready(function(){
-        var socket = io()
-        
-      })
+     var socket = io()
+     $.ajax({
+       type:'get',
+       url:'./ajax/thong-ke',
+       success:function(data){
+         socket.emit('thong-ke',data)
+       }
+     })
     </script>
   </body>
 </html>

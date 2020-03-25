@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="../../materialize/css/materialize.min.css">
+    <link rel="stylesheet" href="../../materialize/css/customer.css">
+    <link rel="stylesheet" href="../../materialize/css/datatable.min.css">
+</head>
+<style>
+    body{
+    background-image: url('https://i.ytimg.com/vi/X42N5384rLk/maxresdefault.jpg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;  
+    min-height:650px;  
+    }
+    .p-t{
+        padding-top: 3%;
+    }
+    .login-form{
+        opacity: 0.8;
+    }
+</style>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="valign-wrapper center-align ">
+               <div class="row col s3 ">
+                   <div class="row">
+                       <div class="card z-depth-3 login-form">
+                           <div class="card-header">
+                               <h5 class="center-align p-t card-title"><b>Login</b></h5>
+                           </div>
+                          <div class="card-content">
+                              <div class="row">
+                                <form method="POST">
+                                    <div class="col s12">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">account_circle                                            </i>
+                                            <input type="text" id="icon_prefix2" class="materialize-textarea" name="username" />
+                                            <label for="icon_prefix2">Username</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">lock</i>
+                                            <input type="password"  id="icon_prefix2" class="materialize-textarea" name="password" />
+                                            <label for="icon_prefix2">Password</label>
+                                        </div>
+                                            <div class="input-field col s12">
+                                                <button class="waves-effect waves-light btn-small">Đăng nhập</button>
+                                           </div>    
+
+                                    </div>
+                                </form>
+                              </div>
+                          </div>
+                       </div>
+                   </div>
+               </div>
+              </div>
+               
+        </div>
+    </div>
+    <!-- scripts include -->
+    <script src="../../materialize/js/jquery-3.4.1.min.js"></script>
+    <script src="../../materialize/js/materialize.min.js"></script>
+    <script src="../../materialize/js/datatable.min.js"></script>
+</body>

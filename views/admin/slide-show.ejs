@@ -64,7 +64,7 @@
 
   </head>
   <body>
-    <header role="banner">
+    <!-- <header role="banner">
       <nav role="navigation">
         <p class="logo"><a href="index.html" title="WebSlides">WebSlides</a></p>
         <ul>
@@ -84,10 +84,10 @@
               <em>@WebSlides</em>
             </a>
           </li>
-          <!--  <li class="dribbble"><a rel="external" href="http://dribbble.com/webslides" title="Dribbble"><svg class="fa-dribbble"><use xlink:href="#fa-dribbble"></use></svg> <em>webslides</em></a></li> -->
+        
         </ul>
       </nav>
-    </header>
+    </header> -->
 
     <main role="main">
       <article id="webslides" class="vertical">
@@ -106,10 +106,16 @@
               
             </p>
             <p>
-              <a href="#" class="button zoomIn" >
+              <div class="button zoomIn" >
               
                 Số phiếu hiện tại
-              </a>
+                <p id="sophieu"></p>
+              </div>
+              <div class="button zoomIn" >
+              
+                Số đại biểu tham dự
+                <p id="sodaibieu"></p>
+              </div>
             </p>
           </div>
           <!-- .end .wrap -->
@@ -126,7 +132,6 @@
         <section>
           áds
         </section>
-
       </article>
       <!-- end article -->
     </main>
@@ -154,21 +159,25 @@
         changeOnClick:true,
       })
       var socket = io()
-      socket.on('page',(msg)=>{
-       const curPage = msg.split('=')[1]
-      //  const lastPage = window.location.hash.split('=')[1]
-      //  const toPage = curPage - lastPage
-      console.log(curPage)
-       ws.goToSlide(curPage - 1)
-      //  console.log(toPage,curPage,lastPage)
-      //   if(toPage < 0)
-      //     ws.goToSlide(toPage,ws.goPrev())
-      //   if(toPage > 0)
-      //     ws.goToSlide(4,ws.goNext())
+      
+      $('body').on('click keydown',function(){
+        setTimeout(function(){
+          const curPage = window.location.hash
+          socket.emit('page',curPage)
+        },1000)
       })
+      socket.on('thong-ke',function(msg){
+        const {sophieu,sodaibieu} = msg[0]
+        if(sophieu == null)
+        $("#sophieu").html(0)
+        else
+        $("#sophieu").html(sophieu)
+        $("#sodaibieu").html(sodaibieu)
+        console.log(sophieu)
+    })
     </script>
 
     <!-- OPTIONAL - svg-icons.js (fontastic.me - Font Awesome as svg icons) -->
-    
+
   </body>
 </html>

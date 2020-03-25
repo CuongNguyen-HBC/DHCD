@@ -1,6 +1,13 @@
 ﻿create database DaiHoiCoDong
 use DaiHoiCoDong
 
+create table Users(
+username varchar(200) primary key,
+password nvarchar(255) not null,
+created_at datetime not null default(getdate())
+)
+
+insert into Users(username,password) values('admin','Cu@ng123')
 create table DanhSachCoDong(
 ID nvarchar(200) primary key,
 UID nvarchar(200) not null,
@@ -23,8 +30,10 @@ Ma_Dai_Bieu as 'HBC000' + convert(nvarchar,ID) ,
 Ten_Dai_Bieu nvarchar(200) not null,
 CMND nvarchar(100) null unique,
 TongCP int not null default(0),
+Status int not null ,
 created_at datetime not null default(getdate())
 )
+
 create table ChiTietDaiBieu(
 ID int identity(1,1) primary key,
 Ma_Dai_Bieu nvarchar(200) not null,
@@ -43,7 +52,7 @@ created_at datetime not null default(getdate())
 )
 create table BieuQuyetCauHoi(
 stt int identity(1,1) primary key,
-Ma_Dai_Bieu nvarchar(200) unique not null,
+Ma_Dai_Bieu nvarchar(200)  not null,
 CauHoi int not null,
 BieuQuyet int not null,
 created_at datetime not null default(getdate())

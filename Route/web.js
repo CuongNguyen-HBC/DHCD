@@ -15,8 +15,25 @@ module.exports = (app) => {
     .get(admincontroller.getMaCoDong)
     app.route('/ajax/ma-uy-quyen')
     .get(admincontroller.getMaUyQuyen)
+    app.route('/ajax/chot-cau-hoi')
+    .get(admincontroller.ChotCauHoi)
+    app.route('/ajax/refresh/tan-thanh/:id')
+    .get(admincontroller.refreshTanThanh)
+    app.route('/ajax/refresh/khong-tan-thanh/:id')
+    .get(admincontroller.refreshKhongTanThanh)
+    app.route('/ajax/thong-ke')
+    .get(admincontroller.ThongKe)
+    // Test case
     app.route('/test')
     .get((req,res) => {
         res.render('admin/mc-script')
+    })
+    app.route('mc-script')
+    .get((req,res)=>{
+        res.render('admin/mc-script')
+    })
+    app.route('/slide-show')
+    .get((req,res) => {
+        res.render('admin/slide-show')
     })
 }
