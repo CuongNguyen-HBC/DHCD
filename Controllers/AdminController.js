@@ -3,6 +3,11 @@ const CoDongModel = require(`${path}/Model/DanhSachCoDong`)
 const ChiTietDaiBieuModel = require(`${path}/Model/ChiTietDaiBieu`)
 const CauHoiModel = require(`${path}/Model/DanhSachCauHoi`)
 const BieuQuyetCauHoiModel =  require(`${path}/Model/BieuQuyetCauHoi`)
+const SlideShowModel =  require(`${path}/Model/SlideShow`)
+const DienBienModel =  require(`${path}/Model/DienBienDaiHoi`)
+const UngVienModel =  require(`${path}/Model/UngVienBauCu`)
+const KetQuaModel =  require(`${path}/Model/KetQuaBauCu`)
+const gapi = require(`${path}/auth.js`)
 const socket = require('socket.io')
 exports.CheckIn = async (req, res) => {
   const daibieu = new DaiBieuModel
@@ -43,19 +48,16 @@ exports.getMaUyQuyen = async (req, res) => {
   }
 }
 exports.pCheckIn = async (req, res) => {
-
   const tendaibieu = req.body.Ten_Dai_Bieu
   const cmnd = req.body.CMND
   const id = req.body.id
-  const options = req.body.options
+  const cptong = req.body.CP_Tong
+  const options = req.body.action
   const codong = new CoDongModel
   const daibieu = new DaiBieuModel
   const chitietdaibieu = new ChiTietDaiBieuModel
-  daibieu.insertDaiBieu(tendaibieu, cmnd, id,options)
-  setTimeout(function () {
-    res.redirect('./check-in')
-  }, 3000)
-
+  daibieu.insertDaiBieu(tendaibieu, cmnd, id,cptong,options)
+  res.redirect('./check-in')
 }
 exports.pCheckOut = async (req, res) => {
   const madaibieu = req.body.Ma_Dai_Bieu
@@ -119,4 +121,81 @@ exports.ThongKe = async (req,res) => {
   const daibieu = new DaiBieuModel
   const result = await daibieu.ThongKeDaiBieu()
   res.send(result)
+}
+exports.SlideShow = async (req,res) => {
+  const slideshow = new SlideShowModel
+  const slide = await slideshow.SlideShow()
+  res.render('admin/slide-show',{slide:slide})
+}
+
+exports.DownloadFileBieuQuyet = async (req,res) => {
+  const dienbien = new DienBienModel
+  const id = req.query.id
+  // const id = 1
+  const {vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot} = await dienbien.BieuQuyetVanDe(id)
+  gapi.BieuQuyetVanDe(vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot)
+ 
+  // ()`./Public/storage/${vande}.pdf`)
+}
+
+exports.DownloadFileDieuKien = async (req,res) => {
+  const dienbien = new DienBienModel
+  const {sophieubd,tong} = await dienbien.SoPhieuBatDau()
+  gapi.BatDauDaiHoi(sophieubd,tong)
+  res.download(`${path}/Public/storage/BienBanDuDieuKien.pdf`)
+}
+// bầu cử
+exports.vBauCu = async (req,res) => {
+  const ungvien = new UngVienModel
+  const list = await ungvien.listUngVien()
+  res.render('admin/ung-vien',{list:list})
+}
+exports.fBauCu = async (req,res) => {
+  const ungvien = new UngVienModel
+  const id = req.params.id
+  const info =await ungvien.UngVien(id)
+  res.render('admin/form-bau-cu',{ungvien:info})
+}
+exports.pBauCu = async (req,res) => {
+  const ungvien = new UngVienModel
+  const daibieu = new DaiBieuModel
+  const ketqua = new KetQuaModel
+  const id = req.params.id
+  const {Ma_Dai_Bieu,sophieu} = req.body
+  const soungvien = await ungvien.countUngVien()
+  const sophieuungvien = await daibieu.ThongTinDaiBieu(Ma_Dai_Bieu)
+  const tongphieu = sophieuungvien.TongCP * soungvien
+  const spketqua = await ketqua.checkTongPhieu(Ma_Dai_Bieu)
+  const spdabau = spketqua.TongPhieu
+  const condition = tongphieu - spdabau - sophieu
+  if(condition < 0){
+    await ketqua.HuyKetQua(Ma_Dai_Bieu)
+    res.send('Phiếu không hợp lệ')
+  }
+  else{
+    await ketqua.insertKetQua(Ma_Dai_Bieu,id,sophieu)
+    res.redirect(`./${id}`)
+  }
+}
+exports.DanhSachUngVien = async (req,res) => {
+  const ungvien = new UngVienModel
+  const list = await ungvien.listUngVien()
+  res.send({data:list})
+}
+exports.ThongTinDaiBieu = async (req,res) => {
+const madaibieu = req.query.madaibieu
+  const ungvien = new UngVienModel
+  const daibieu = new DaiBieuModel
+  const soungvien = await ungvien.countUngVien()
+  const info = await daibieu.ThongTinDaiBieu(madaibieu)
+  res.send({info:info,soungvien:soungvien})
+}
+// live bieu quyet cau hoi
+exports.liveBieuQuyet = async (req,res) => {
+  const dienbien = new DienBienModel
+  const id = req.query.id
+  // const id = 1
+  const {vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot} = await dienbien.BieuQuyetVanDe(id)
+  
+  res.render('slides/bieu-quyet',{vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot})
 }

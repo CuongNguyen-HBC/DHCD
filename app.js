@@ -9,6 +9,8 @@ const user = require(`${path}/Model/Users.js`)
 app.set('view engine', 'ejs')
 require('dotenv').config()
 require(`${path}/Route/web.js`)(router)
+const gapi = require(`${path}/auth.js`)
+
 app.use(express.static('Public'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -22,6 +24,8 @@ app.use(session({resave: true,
 app.get('/login',(req,res)=> {
     res.render('login')
 })
+app.get('/test',gapi.ChotDieuKien)
+
 app.post('/login',async (req,res,next)=> {
     const {username,password} = req.body
     const init = new user
@@ -38,7 +42,6 @@ app.use('/admin',(req,res,next) =>{
     else res.redirect('../login')
 })
 app.use('/admin',router)
-
 const io = require('socket.io')(app.listen(process.env.APP_PORT || 80 ,function(){
     console.log('server was reloaded...')
     console.log(`Server is listening port ${process.env.APP_PORT}`)
@@ -52,5 +55,9 @@ io.on('connection',function(socket){
     socket.on('thong-ke',function(msg){
         // const {sodaibieu,tongphieu} = msg
         io.emit('thong-ke',msg)
+    })
+
+    socket.on('show-bieu-quyet',function(msg){
+        io.emit('show-bieu-quyet',msg)
     })
 })

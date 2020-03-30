@@ -8,17 +8,18 @@ class DanhSachCauHoi extends Model{
     async listCauHoi(){
         const connect = await this.pool.connect()
         const pool = await connect.request()
-        const result = await pool.query(`SELECT CONVERT(varchar,locked,20) as 'locked',CauHoi,NoiDungCauHoi,SoPhieuHienTai,Status,id,sodaibieu=(select count(*) from DanhSachDaiBieu) FROM ${this.table} order by id`)
+        const result = await pool.query(`SELECT CONVERT(varchar,locked,20) as 'locked',CauHoi,NoiDungCauHoi,SoPhieuHienTai,Status,id,SoNguoi as 'sodaibieu' FROM ${this.table} order by id`)
         return result.recordset
     }
     async lockCauHoi(id){
         const connect = await this.pool.connect()
         const pool = await connect.request()
-        pool.query(`SELECT SUM(TongCP) as 'sophieu' from DanhSachDaiBieu`).then(async res => {
+        pool.query(`SELECT SUM(TongCP) as 'sophieu', COUNT(*) as 'sl' from DanhSachDaiBieu`).then(async res => {
             const sophieu = res.recordset[0].sophieu
+            const songuoi = res.recordset[0].sl
             const pool2 = await this.pool.connect()
             console.log(sophieu,id)
-            pool2.query(`UPDATE DanhSachCauHoi SET SoPhieuHienTai = ${sophieu} , Status = 1 , locked = GETDATE() where id = ${id}`)
+            pool2.query(`UPDATE DanhSachCauHoi SET SoPhieuHienTai = ${sophieu} , Status = 1 , locked = GETDATE(), SoNguoi = ${songuoi} where id = ${id}`)
         })
     }
     async CauHoi(id){
@@ -48,7 +49,10 @@ class DanhSachCauHoi extends Model{
         pool.input('cauhoi',mssql.Int,id)
         pool.input('bieuquyet',mssql.Int,bieuquyet)
         pool.input('madaibieu',mssql.NVarChar(200),madaibieu)
+        const check = await pool.query(`SELECT * FROM BieuQuyetCauHoi where Ma_Dai_Bieu = @madaibieu and CauHoi=@cauhoi`)
+        if(check.rowsAffected[0] <= 0)
         pool.query(`INSERT INTO BieuQuyetCauHoi(Ma_Dai_Bieu,CauHoi,BieuQuyet) values(@madaibieu,@cauhoi,@bieuquyet)`)
+        else return false
     }
 }
 module.exports = DanhSachCauHoi

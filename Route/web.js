@@ -10,6 +10,14 @@ module.exports = (app) => {
     app.route('/bieu-quyet/:id')
     .get(admincontroller.BieuQuyet)
     .post(admincontroller.pBieuQuyet)
+    app.route('/bat-dau-dai-hoi')
+    .get(admincontroller.DownloadFileDieuKien)
+    app.route('/bau-cu')
+    .get(admincontroller.vBauCu)
+    app.route('/ung-vien/:id')
+    .get(admincontroller.fBauCu)
+    .post(admincontroller.pBauCu)
+    
     // AJAX
     app.route('/ajax/ma-co-dong')
     .get(admincontroller.getMaCoDong)
@@ -23,17 +31,24 @@ module.exports = (app) => {
     .get(admincontroller.refreshKhongTanThanh)
     app.route('/ajax/thong-ke')
     .get(admincontroller.ThongKe)
+    app.route('/ajax/chot-van-de')
+    .get(admincontroller.DownloadFileBieuQuyet)
+    app.route('/ajax/danh-sach-ung-vien')
+    .get(admincontroller.DanhSachUngVien)
+    app.route('/ajax/thong-tin-dai-bieu')
+    .get(admincontroller.ThongTinDaiBieu)
     // Test case
     app.route('/test')
     .get((req,res) => {
-        res.render('admin/mc-script')
+        res.render('slides/bieu-quyet')
     })
-    app.route('mc-script')
+    app.route('/mc-script')
     .get((req,res)=>{
         res.render('admin/mc-script')
     })
     app.route('/slide-show')
-    .get((req,res) => {
-        res.render('admin/slide-show')
-    })
+    .get(admincontroller.SlideShow)
+    app.route('/slide-bieu-quyet')
+    .get(admincontroller.liveBieuQuyet)
+    
 }

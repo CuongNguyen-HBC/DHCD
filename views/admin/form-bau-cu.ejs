@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="../../materialize/css/materialize.min.css">
+  <link rel="stylesheet" href="../../materialize/css/datatable.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <%- include('../header.ejs')  %>
+    <div class="container-fluid background-master">
+      <div class="row">
+        <div class="col s12 card">
+            <div class="card-header">
+                <h6>Bỏ phiếu cho ứng viên:
+                    <p><b><%= ungvien.hoten %></b></p>
+                </h6>
+                <div class="row">
+                    <div class="col s12 ">
+                        <div class="input-field col s4">
+                          <i class="material-icons prefix">search</i>
+                          <input id="scanbarcode" type="text" class="validate">
+                          <label for="scanbarcode">Scan phiếu đại biểu</label>
+                        </div>
+                        </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <form method="post">
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input type="text" class="validate" name="Ten_Dai_Bieu" required>
+                                <label >Đại biểu</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">confirmation_number</i>
+                                <input  type="number" class="validate" name="sophieu" required>
+                                <label>Số phiếu</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12  right-align">
+                            <button class="btn" name="Ma_Dai_Bieu" required>Nhập</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div id="modal1" class="modal" style="height: 300px;">
+        <div class="modal-content center-align">
+          <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div>
+              <div class="gap-patch">
+                <div class="circle"></div>
+              </div>
+              <div class="circle-clipper right">
+                <div class="circle">
+                </div>
+              </div>
+            </div>
+      
+          </div>
+          <h5 class="center-align">
+            <Loading class="loading">loading...</Loading>
+          </h5>
+        </div>
+      </div>
+      <button data-target="modal1" class="btn modal-trigger" style="display: none;">Modal</button>
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="../../materialize/js/jquery-3.4.1.min.js"></script>
+    <script src="../../materialize/js/materialize.min.js"></script>
+    <script src="../../materialize/js/datatable.min.js"></script>
+    <script src="../../materialize/js/customer.js"></script>
+    <script>
+        $('#scanbarcode').keypress(function(e){
+            if(e.which === 13) {
+                const value = this.value
+                $.ajax({
+                    type:'get',
+                    url:'../ajax/thong-tin-dai-bieu',
+                    data:{
+                        madaibieu:value
+                    },
+                    beforeSend:function(){
+                        $('.modal-trigger').click()
+                    },
+                    success:function(data){
+                        const {ID,Ma_Dai_Bieu,Ten_Dai_Bieu,TongCP} = data.info
+                        const {soungvien} = data
+                        $('[name="Ma_Dai_Bieu"]').val(Ma_Dai_Bieu)
+                        $('[name="Ten_Dai_Bieu"]').val(Ten_Dai_Bieu)
+                        $('[name="sophieu"]').val(soungvien * TongCP)
+                        M.updateTextFields();
+                        M.toast({html: 'Success!', classes: 'rounded'});
+                    },
+                    complete:function(){
+                        $('#scanbarcode').val('')
+                        var instance = M.Modal.getInstance($('.modal'));
+                        instance.close();
+                    }
+                })
+            }
+        })
+    </script>
+  </body>
+</html>

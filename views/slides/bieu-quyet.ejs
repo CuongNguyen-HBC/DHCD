@@ -1,0 +1,29 @@
+<div class="row">
+    <h3>Biểu quyết vấn đề:</h3>
+    <h5><%= vande %> - <%= noidung %></h5>
+ 
+</div>
+<div class="row col s12">
+    <table class="striped">
+        <thead>
+            <tr>
+                <td>Tổng phiếu</td>
+                <td>Số phiếu tán thành</td>
+                <td>Số phiếu không tán thành</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= new Number(tong).toLocaleString('en-US') %></td>
+                <td><%= new Number(tt).toLocaleString('en-US') %></td>
+                <td><%= new Number(ktt).toLocaleString('en-US') %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col s12">
+        <div class="col s6">Phần trăm tán thành: <%= ptt.toFixed(2) %>%</div>
+        <div class="col s6">Phần trăm không tán thành: <%= pktt.toFixed(2) %>%</div>
+    </div>
+</div>

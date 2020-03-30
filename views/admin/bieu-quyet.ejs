@@ -23,18 +23,17 @@
         <div class="row">
           <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
             <li class="tab"><a class="active" href="#test1">Tán thành</a></li>
-            <li class="tab"><a href="#test2" id="div2">Không tán thành</a></li>
-
+            <li class="tab"><a href="#test2">Không tán thành</a></li>
           </ul>
-
-
           <div id="test1" class="col s12">
+            <div class="row">
             <div class="input-field col s6">
               <i class="material-icons prefix">search</i>
               <input id="tanthanh" type="text" class="validate" name="Ma_Dai_Bieu">
               <label for="">Scan phiếu biểu quyết tán thành</label>
               <button name="options" value="1" hidden></button>
             </div>
+            
             <table class="striped" id="tbl-tanthanh">
               <thead>
                 <tr>
@@ -48,31 +47,43 @@
               <tfoot></tfoot>
             </table>
           </div>
-          <div id="test2" class="col s12">
+        </div>
+          <div id="test2" class="col s12 ">
+            <div class="row ">
             <div class="input-field col s6">
               <i class="material-icons prefix">search</i>
               <input id="khongtanthanh" type="text" class="validate" name="Ma_Dai_Bieu">
               <label for="">Scan phiếu biểu quyết không tán thành</label>
               <button name="options" value="0" hidden></button>
-            </div>
-            <div class="col s12">
-            <table class="striped" id="tbl-khongtanthanh">
-              <thead>
-                <tr>
-                  <th>Phiếu đại biểu</th>
-                  <th>Đại Biểu</th>
-                </tr>
-              </thead>
-              <tbody>
+            </div></div>
+            <div class="row">
+              <table class="striped" id="tbl-khongtanthanh">
+                <thead>
+                  <tr>
+                    <th>Phiếu đại biểu</th>
+                    <th>Đại Biểu</th>
+                  </tr>
+                </thead>
+                <tbody>
 
-              </tbody>
-              <tfoot></tfoot>
-            </table></div>
+                </tbody>
+                <tfoot></tfoot>
+              </table>
+            </div>
           </div>
         </div>
+        <div class="row right-align">
+          <button  class="btn-floating pulse print">
+            Chốt
+          </button>
+        </div>
+        
       </div>
+      
     </div>
+    
   </div>
+  
 </div>
 <div id="modal1" class="modal" style="height: 300px;">
   <div class="modal-content center-align">
@@ -103,13 +114,18 @@
 <script src="../../materialize/js/datatable.min.js"></script>
 <script src="../../materialize/js/customer.js"></script>
 <script src="../../materialize/js/scan.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
 <script>
+  var socket = io()
   const id = '<%= id %>'
   $('#tbl-tanthanh').DataTable({
     ajax: {
       url: `../ajax/refresh/tan-thanh/${id}`,
+      complete:function(data){
+        socket.emit('show-bieu-quyet',id)
+      },
       dataSrc: '',
-
+      
     },
     columns: [
       { 'data': "Ma_Dai_Bieu" },
@@ -120,6 +136,9 @@
     ajax: {
       url: `../ajax/refresh/khong-tan-thanh/${id}`,
       dataSrc: '',
+      complete:function(data){
+        socket.emit('show-bieu-quyet',id)
+      },
     },
     columns: [
       { 'data': "Ma_Dai_Bieu" },
@@ -129,7 +148,16 @@
             { width: '20%', targets: 0 }
         ],
   })
-  
+  $('.print').click(function(){
+    console.log(id)
+    $.ajax({
+      type:'get',
+      url:'../ajax/chot-van-de/',
+      data:{
+        id:id
+      }
+    })
+  })
   ScanBieuQuyet()
 </script>
 </body>

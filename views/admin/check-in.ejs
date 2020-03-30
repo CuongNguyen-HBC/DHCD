@@ -42,7 +42,7 @@
                         <input id="offline" type="text" class="validate">
                         <label for="offline">Scan phiếu dự đại hội từ xa</label>
                       </div>
-                      <form method="post">
+                      <form method="post" id="form-check-in">
                         <div class="col s12 card">
                           <div class="card-header">
                             <h5>Phiếu đại biểu</h5>
@@ -76,7 +76,7 @@
                                 <tfoot>
                                   <tr>
                                     <td colspan="2">Tổng:</td>
-                                    <td id="CP_Tong">0
+                                    <td><input name="CP_Tong" value="0"  id="CP_Tong" style="border: none;"/> 
                                     </td>
                                   </tr>
                                 </tfoot>
@@ -201,6 +201,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
     <script>
      scanCoDong()
+     $('[name="action"]').submit(function(){
+       event.preventDefault()
+       $(this).attr('disabled',true)
+     })
      $('.checked').DataTable()
      var socket = io()
      $.ajax({

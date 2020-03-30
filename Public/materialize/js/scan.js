@@ -43,7 +43,7 @@ function scanCoDong() {
                     $('#check-data').find('tr').each( (e,i) => {
                         tong +=new  Number($(i).find('td:eq(2)').text())
                     })
-                    $("#CP_Tong").html(tong)
+                    $("#CP_Tong").val(tong)
                     return data
                         } catch (error) {
                            alert('Phiếu đã check in')
@@ -58,6 +58,7 @@ function scanCoDong() {
                     $('[name="CMND"]').val(cmnd)
                     $('.loading').css({ 'color': "#008000" }).html("Thành công")
                     $('#scanuyquyen').focus()
+                    $('[name="action"]').val(1)
                     M.updateTextFields();                    
                 },
                 error: function () {
@@ -95,7 +96,6 @@ function scanCoDong() {
                         
                         var tong = 0
                     if ($('input[name="id"]').length > 0) {
-                        console.log($('input[name="id"]').val())
                         const check = []
                         $('input[name="id"]').each((e,r) => {
                             check.push(r.value)
@@ -113,7 +113,7 @@ function scanCoDong() {
                     $('#check-data').find('tr').each( (e,i) => {
                         tong +=new  Number($(i).find('td:eq(2)').text())
                     })
-                    $("#CP_Tong").html(tong)
+                    $("#CP_Tong").val(tong)
                     return data
                         } catch (error) {
                             // $('#scanbarcode').val('')
@@ -154,7 +154,6 @@ function scanCoDong() {
                     // $('.modal-trigger').click()
                 },
                 success: function (data) {
-                    
                     try {
                         const macodong = data[0].ID
                         const codong = data[0].Ten_Co_Dong
@@ -177,7 +176,7 @@ function scanCoDong() {
                     $('#check-data').find('tr').each( (e,i) => {
                         tong +=new  Number($(i).find('td:eq(2)').text())
                     })
-                    $("#CP_Tong").html(tong)
+                    $("#CP_Tong").val(tong)
                     return data
                         } catch (error) {
                            alert('Phiếu đã check in')
@@ -194,6 +193,7 @@ function scanCoDong() {
                     $('[name="CMND"]').val(cmnd)
                     $('.loading').css({ 'color': "#008000" }).html("Thành công")
                     $('#scanuyquyen').focus()
+                    $('[name="action"]').val(2)
                     M.updateTextFields();                    
                 },
                 error: function () {
