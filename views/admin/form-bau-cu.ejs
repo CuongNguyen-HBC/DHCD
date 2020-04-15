@@ -84,7 +84,10 @@
     <script src="../../materialize/js/materialize.min.js"></script>
     <script src="../../materialize/js/datatable.min.js"></script>
     <script src="../../materialize/js/customer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
     <script>
+      const socket = io()
+      socket.emit('show-bau-cu','3')
         $('#scanbarcode').keypress(function(e){
             if(e.which === 13) {
                 const value = this.value

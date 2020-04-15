@@ -278,4 +278,31 @@ function ScanBieuQuyet(){
             })
         }
     })
+    $("#khonghople").keypress(function(e){
+        if(e.which == 13){
+            const madaibieu = this.value
+            const url = window.location.href
+            $.ajax({
+                type:'post',
+                url:url,
+                data:{
+                    Ma_Dai_Bieu:madaibieu,
+                    options:3
+                },
+                success:function(data){
+                    $("#tbl-khonghople").DataTable().ajax.reload()  
+                    M.toast({html: 'Success!', classes: 'rounded'});
+                },
+                complete:function(){
+                    $('#khonghople').val('')
+                    var instance = M.Modal.getInstance($('.modal'));
+                    instance.close();
+                    
+                },
+                error:function(){
+                    M.toast({html: 'Errors!', classes: 'rounded'});
+                }
+            })
+        }
+    })
 }

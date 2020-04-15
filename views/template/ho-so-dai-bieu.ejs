@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="../materialize/css/materialize.min.css">
+
+    <link rel="stylesheet" href="../materialize/css/datatable.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <%- include('../header.ejs')  %>
+    <div class="container-fluid ">
+      
+      <div class="col s12 card">
+            <div class="card-header">
+                <h5>Danh sách đại biểu</h5>
+                <table class="striped list-dai-bieu" >
+                    <thead>
+                        <tr>
+                            <th>Mã Đại Biểu</th>
+                            <th>Họ tên</th>
+                            <th>Tổng cổ phiếu</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+      </div>
+    </div>
+    
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="../materialize/js/jquery-3.4.1.min.js"></script>
+    <script src="../materialize/js/datatable.min.js"></script>
+    <script src="../materialize/js/materialize.min.js"></script>
+    <script src="../materialize/js/customer.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/barcodes/JsBarcode.code39.min.js"></script>
+    <script>
+        var table = $('.list-dai-bieu').DataTable({
+            ajax:{
+                url:'ajax/danh-sach-dai-bieu',
+               
+                dataSrc: '',
+               
+            },
+            columns:[
+                {
+                    data:'Ma_Dai_Bieu'
+                },
+                
+                {
+                    data:'Ten_Dai_Bieu'
+                },
+                
+                {
+                    data:'TongCP'
+                },
+                {
+                    data: null,
+                    defaultContent: '<button class="btn-floating pulse"><i class="material-icons">print</i></button>'
+                }
+            ]
+        })
+        $('.list-dai-bieu tbody').on( 'click', 'button', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        window.open(`danh-sach-dai-bieu/${data.Ma_Dai_Bieu}`)
+    } );
+    </script>
+  </body>
+</html>

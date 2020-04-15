@@ -7,23 +7,33 @@
     <table class="striped">
         <thead>
             <tr>
-                <td>Tổng phiếu</td>
-                <td>Số phiếu tán thành</td>
-                <td>Số phiếu không tán thành</td>
+                <td>Tổng cổ phần</td>
+                <td>Số cổ phần tán thành</td>
+                <td>Số cổ phần không tán thành</td>
+                <td>Số phiếu trắng</td>
+                <td>Số phiếu không hợp lệ</td>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><%= new Number(tong).toLocaleString('en-US') %></td>
+                <td><%= new Number(tongchot).toLocaleString('en-US') %></td>
                 <td><%= new Number(tt).toLocaleString('en-US') %></td>
                 <td><%= new Number(ktt).toLocaleString('en-US') %></td>
+                <!-- <td><%= new Number(tt/tongchot*100).toFixed(6).toLocaleString('en-US') %>%</td>
+                <td><%= new Number(ktt/tongchot*100).toFixed(6).toLocaleString('en-US') %>%</td> -->
+                <td><%= new Number(tongchot - tt - ktt - khl).toLocaleString('en-US') %></td>
+                <td><%= new Number(khl).toLocaleString('en-US') %></td>
             </tr>
         </tbody>
     </table>
-</div>
-<div class="row">
-    <div class="col s12">
-        <div class="col s6">Phần trăm tán thành: <%= ptt.toFixed(2) %>%</div>
-        <div class="col s6">Phần trăm không tán thành: <%= pktt.toFixed(2) %>%</div>
+    <div class="row">
+        <span class="col s6">Tỷ lệ tán thành: <%= new Number(tt/tongchot*100).toFixed(2).toLocaleString('en-US') %>%</span> 
+        <span class="col s6">Tỷ lệ không tán thành : <%= new Number(ktt/tongchot*100).toFixed(2).toLocaleString('en-US') %>%</span> 
     </div>
+</br>
+    <div class="row">
+        <span class="col s6">Tỷ lệ phiếu trắng: <%= new Number((tongchot - tt - ktt - khl)/tongchot*100).toFixed(2).toLocaleString('en-US') %>%</span> 
+        <span class="col s6">Tỷ lệ không hợp lệ : <%= new Number(khl/tongchot*100).toFixed(2).toLocaleString('en-US') %>%</span> 
+    </div>
+    
 </div>

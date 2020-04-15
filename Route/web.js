@@ -29,6 +29,8 @@ module.exports = (app) => {
     .get(admincontroller.refreshTanThanh)
     app.route('/ajax/refresh/khong-tan-thanh/:id')
     .get(admincontroller.refreshKhongTanThanh)
+    app.route('/ajax/refresh/khong-hop-le/:id')
+    .get(admincontroller.refreshKhongHopLe)
     app.route('/ajax/thong-ke')
     .get(admincontroller.ThongKe)
     app.route('/ajax/chot-van-de')
@@ -37,18 +39,21 @@ module.exports = (app) => {
     .get(admincontroller.DanhSachUngVien)
     app.route('/ajax/thong-tin-dai-bieu')
     .get(admincontroller.ThongTinDaiBieu)
+    app.route('/ajax/bat-dau-bau-cu')
+    .get(admincontroller.BatDauBauCu)
     // Test case
     app.route('/test')
     .get((req,res) => {
-        res.render('slides/bieu-quyet')
+        res.render('slides/bau-cu')
     })
     app.route('/mc-script')
-    .get((req,res)=>{
-        res.render('admin/mc-script')
-    })
+    .get(admincontroller.showMCScript)
     app.route('/slide-show')
     .get(admincontroller.SlideShow)
     app.route('/slide-bieu-quyet')
     .get(admincontroller.liveBieuQuyet)
-    
+    app.route('/slide-bau-cu')
+    .get(admincontroller.liveBauCu)
+    app.route('/bien-ban-dien-bien')
+    .get(admincontroller.DienBienDaiHoi)
 }

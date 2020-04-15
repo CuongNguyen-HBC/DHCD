@@ -73,9 +73,10 @@ exports.pCheckOut = async (req, res) => {
 exports.BieuQuyet = async (req, res) => {
   const id = req.params.id
   const cauhoi = new CauHoiModel
+  const slide = await cauhoi.CauHoi(id)
   const tanthanh = await cauhoi.TanThanh(id)
   const khongtanthanh = await cauhoi.KhongTanThanh(id)
-  res.render('admin/bieu-quyet', { tanthanh: tanthanh, khongtanthanh: khongtanthanh,id:id })
+  res.render('admin/bieu-quyet', { tanthanh: tanthanh, khongtanthanh: khongtanthanh,id:id,slide:slide.Slide})
 }
 exports.pBieuQuyet = (req, res) => {
   const id = req.params.id
@@ -84,9 +85,12 @@ exports.pBieuQuyet = (req, res) => {
   const madaibieu = req.body.Ma_Dai_Bieu
   if (options == 1) {
     cauhoi.insertBieuQuyet(madaibieu, id, 1)
-  } else {
+  } else if(options == 0) {
     cauhoi.insertBieuQuyet(madaibieu, id, 0)
+  } else {
+    cauhoi.insertBieuQuyet(madaibieu, id, 3)
   }
+
   res.redirect(`./${id}`)
 }
 
@@ -112,6 +116,16 @@ exports.refreshKhongTanThanh = async (req,res) => {
     const bieuquyetcauhoi = new BieuQuyetCauHoiModel
      const id = req.params.id
     res.send(await bieuquyetcauhoi.listKhongTanThanh(id))
+  } catch (error) {
+    console.log('loi roi')
+    console.log(error)
+  }
+}
+exports.refreshKhongHopLe = async (req,res) => {
+  try {
+    const bieuquyetcauhoi = new BieuQuyetCauHoiModel
+     const id = req.params.id
+    res.send(await bieuquyetcauhoi.listKhongHopLe(id))
   } catch (error) {
     console.log('loi roi')
     console.log(error)
@@ -195,7 +209,26 @@ exports.liveBieuQuyet = async (req,res) => {
   const dienbien = new DienBienModel
   const id = req.query.id
   // const id = 1
-  const {vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot} = await dienbien.BieuQuyetVanDe(id)
+  const {vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot,khl} = await dienbien.BieuQuyetVanDe(id)
   
-  res.render('slides/bieu-quyet',{vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot})
+  res.render('slides/bieu-quyet',{vande,noidung,tong,tt,ktt,tongchot,ptongchot,ptt,pktt,tgchot,khl})
 }
+exports.showMCScript = async (req,res) => {
+  const slide = new SlideShowModel
+  const mcscript = await slide.MCScript()
+  res.render('admin/mc-script',{mcscript})
+}
+exports.liveBauCu = async (req,res) => {
+  const ungvien = new UngVienModel
+  const slide = '4'
+  const list = await ungvien.listUngVien()
+  res.render('slides/bau-cu',{list:list})
+}
+exports.BatDauBauCu =  (req,res) => {
+  const dienbien = new DienBienModel
+  const chot = dienbien.BatDauBauCu()
+  res.send('ok')
+}
+exports.DienBienDaiHoi = (req,res) => {
+  res.render('admin/dien-bien')
+}   

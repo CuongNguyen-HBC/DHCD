@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="../../../materialize/css/materialize.min.css">
+
+    <link rel="stylesheet" href="../../../materialize/css/datatable.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+    <div class="container-fluid ">
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <!--Import Google Icon Font-->
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <!--Import materialize.css-->
+            <link rel="stylesheet" href="../../materialize/css/materialize.min.css">
+        
+            <!--Let browser know website is optimized for mobile-->
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+          </head>
+          <style>
+            body{
+              margin: 0 auto;
+              
+            width: 209.903mm;
+            border: 1px solid black;
+            padding-top: 1%;
+            padding-left: 1%;
+            }
+            .row{
+              margin-bottom: 10px;
+              padding-left: 1%;
+            }
+            .container-fluid{
+              padding: 3;
+            }
+          </style>
+          <body style="font-family: Arial;">
+            <div class="container-fluid background-master">
+              <div class="row">
+                <div class="col s12">
+                  <img width="100%" src="../../../logo/logo.png">
+                </div>
+              </div>
+              <div class="row" style="margin-top: -10px !important;">
+                <div class="col s12 center-align">
+                  <h4 style="font-size: 28px;"><b>PHIẾU BIỂU QUYẾT</b></h4>
+                  <h6 style="font-size: 20px;font-weight: 700;font-family: 'Times New Roman', Times, serif;"><b>ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NGÀY 26/04/2020</b></h6>
+                </div>
+                <div class="col s12 center-align">
+                    <h6 style="font-size: 20px;font-weight: 700;font-family: 'Times New Roman', Times, serif;"><b>ĐẠI BIỂU SỐ: <%= stt %></b></h6>
+                  </div>
+                <div class="col s12 center-align">
+                  <img  width="20%" id="bar"/>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col s12">
+                      <p style="font-weight: bold; font-style: inherit;">Nội dung vấn đề</p>
+                  </div>
+              </div>
+              <div class="row" style="padding-top: -10% !important;">
+                <div class="col s12">
+                   <div style="border: 1px solid black; height: 50px;">
+                    Thông qua danh sách ban kiểm phiếu
+                </div>
+                </div>
+            </div>
+              <div class="row"  >
+                <div class="col s12" >
+                    <div class="row">
+                        <div class="col s12 center-align" style="font-size: 14px;font-weight: 600; font-family: 'Times New Roman', Times, serif;"><b>Đại biểu có thể sử dụng phiếu này kiểm tra thông tin của mình bằng cách quét mã vạch tại máy trạm trong khu vực đại hội.</b></div>
+                    </div>
+                </div>
+              </div>
+             
+            </div>
+            
+            <!--JavaScript at end of body for optimized loading-->
+            <script src="../../materialize/js/jquery-3.4.1.min.js"></script>
+            <script src="../../materialize/js/materialize.min.js"></script>
+            <script src="../../materialize/js/customer.js"></script>
+          </body>
+        </html>
+    </div>
+    
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="../../../materialize/js/jquery-3.4.1.min.js"></script>
+    <script src="../../../materialize/js/datatable.min.js"></script>
+    <script src="../../../materialize/js/materialize.min.js"></script>
+    <script src="../../../materialize/js/customer.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/barcodes/JsBarcode.code39.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        JsBarcode("#bar","<%= barcode %>")
+        var data = $("#bar").attr('src')
+        
+        })
+        </script>
+  </body>
+</html>

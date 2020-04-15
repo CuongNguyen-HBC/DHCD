@@ -1,0 +1,18 @@
+<div class="grid m">
+  <div class="column">
+    <h2>KẾT QUẢ BỎ PHIẾU BẦU CỬ</h2>
+   </div>
+</div>
+    <% for(var i= 0 ; i < list.length ; i++) { %>
+      <div class="grid sms">
+      <div class="column">
+        <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png" alt="" class="alignleft size-30 circle" >    
+      </div>
+      <div class="column">
+        <%= list[i].hoten %>
+      </div>
+      <div class="column">
+        SỐ PHIẾU BẦU : <%=  list[i].sophieu %>
+      </div>
+    </div>
+    <% } %>

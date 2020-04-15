@@ -122,19 +122,26 @@
 <span>Ông Vũ Văn Hiến – Luật sư, cùng toàn thể quý đại biểu đã sắp xếp thời gian quý báu của mình để có mặt tại Đại hội. </span> 
 
         </section>
-        <section>
-          áds
+        <% for(var i = 0 ; i < mcscript.length ; i++) { %>
+        <section data-slide="<%= mcscript[i].Slide %>" class="slide-top">
+          <div class="wrap">
+            <div class="grid ms">
+              <div class="column">
+                <!-- <img class="background" src="../images/<%= mcscript[i].SlideImg %>" /> -->
+                <%- mcscript[i].McScript %>
+              </div>
+              <div class="column">
+                <img class="background" src="../images/<%= mcscript[i].SlideImg %>" />
+               
+              </div>
+            </div>
+          </div>
+         
+          
+         
         </section>
-        <section>
-          áds
-        </section>
-        <section>
-          áds
-        </section>
-        <section>
-          áds
-        </section>
-
+        <% } %>
+        
       </article>
       <!-- end article -->
     </main>
@@ -156,24 +163,66 @@
     <script src="../../materialize/js/datatable.min.js"></script>
     <script src="../../materialize/js/customer.js"></script>
     <script src="../../materialize/js/scan.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
     <script>
       const ws = new WebSlides({
         changeOnClick:true,
       })
       var socket = io()
-      socket.on('page',(msg)=>{
-       const curPage = msg.split('=')[1]
-      //  const lastPage = window.location.hash.split('=')[1]
-      //  const toPage = curPage - lastPage
-      console.log(curPage)
-       ws.goToSlide(curPage - 1)
-      //  console.log(toPage,curPage,lastPage)
-      //   if(toPage < 0)
-      //     ws.goToSlide(toPage,ws.goPrev())
-      //   if(toPage > 0)
-      //     ws.goToSlide(4,ws.goNext())
+      $('body').on('click keydown focusout focus',function(){
+        setTimeout(function(){
+          const curPage = window.location.hash
+          socket.emit('page',curPage)
+        },1500)
       })
+      var start = null;
+      window.addEventListener("touchstart",function(event){
+        if(event.touches.length === 1){
+            start = event.touches.item(0).clientX;
+          }else{
+            start = null;
+          }
+        });
+        window.addEventListener("touchend",function(event){
+          var offset = 100
+          if(start){
+            //the only finger that hit the screen left it
+            var end = event.changedTouches.item(0).clientX;
+
+            if(end > start + offset){
+              setTimeout(function(){
+                const curPage = window.location.hash
+                socket.emit('page',curPage)
+              },1500)
+            }
+            if(end < start - offset ){
+              setTimeout(function(){
+                const curPage = window.location.hash
+                socket.emit('page',curPage)
+              },1500)
+            }
+          }
+        });
+
+      socket.on('page',(msg)=>{
+      window.location.hash = msg
+      })
+      socket.on('show-bieu-quyet', function (msg) {
+      const { id, slide } = msg
+      $.ajax({
+        type: 'get',
+        url: './slide-bieu-quyet',
+        data: {
+          id: id
+        },
+        success: function (data) {
+          const slideId = $(`section[data-slide="${slide}"]`).attr('id').split('-')[1]
+          $(`section[data-slide="${slide}"]`).html(data)
+        }
+
+      })
+    })
     </script>
 
     <!-- OPTIONAL - svg-icons.js (fontastic.me - Font Awesome as svg icons) -->

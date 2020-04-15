@@ -59,6 +59,7 @@ SELECT
 tong=(SELECT SUM(TongCP) from DanhSachDaiBieu where Ma_Dai_Bieu in (SELECT Ma_Dai_Bieu from BieuQuyetCauHoi where CauHoi = @id)),
 tt=(SELECT SUM(TongCP) from DanhSachDaiBieu where Ma_Dai_Bieu in (SELECT Ma_Dai_Bieu from BieuQuyetCauHoi where CauHoi = @id and BieuQuyet = 1)),
 ktt=(SELECT SUM(TongCP) from DanhSachDaiBieu where Ma_Dai_Bieu in (SELECT Ma_Dai_Bieu from BieuQuyetCauHoi where CauHoi = @id and BieuQuyet = 0)),
+khl=(SELECT SUM(TongCP) from DanhSachDaiBieu where Ma_Dai_Bieu in (SELECT Ma_Dai_Bieu from BieuQuyetCauHoi where CauHoi = @id and BieuQuyet = 3)),
 tongchot=(SELECT SoPhieuHienTai from DanhSachCauHoi where id=@id),
 ptongchot = cast((SELECT SoPhieuHienTai from DanhSachCauHoi where id=@id) as float)/ cast((SELECT SUM(CP_Tong) from DanhSachCoDong) as float) *100,
 ptt = cast((SELECT SUM(TongCP) from DanhSachDaiBieu where Ma_Dai_Bieu in (SELECT Ma_Dai_Bieu from BieuQuyetCauHoi where CauHoi = @id and BieuQuyet = 1)) as float) /cast((SELECT SUM(TongCP) from DanhSachDaiBieu where Ma_Dai_Bieu in (SELECT Ma_Dai_Bieu from BieuQuyetCauHoi where CauHoi = @id)) as float)*100,
@@ -69,5 +70,29 @@ noidung = (SELECT NoiDungCauHoi from DanhSachCauHoi  where id = @id)
 `)
         return result.recordset[0]
     }
+    async BatDauBauCu(){
+        this.pool.connect().then(query => {
+            query.request().query('SELECT COUNT(*) as sodaibieu , SUM(TongCP) as tong from DanhSachDaiBieu').then(res => {
+                this.pool.connect().then(query2 => {
+                    query2.request()
+                    .query("SELECT * FROM DienBienDaiHoi where noidung =N'Bầu Cử'").then(check => {
+                        if(check.rowsAffected <= 0){
+                            this.pool.connect().then(insert => {
+                                const {sodaibieu, tong} = res.recordset[0]
+                                insert.request()
+                                .input('sodaibieu',mssql.Int,sodaibieu)
+                                .input('tong',mssql.Int,tong)
+                                .query("INSERT INTO DienBienDaiHoi(noidung,sophieu,sodaibieu) values (N'Bầu Cử',@tong,@sodaibieu)")
+                            }).then( () => {
+                                gapi.BatDauBauCu()
+                            })
+                        }
+                    })
+                    
+                })
+            })
+        })
+    }
 }
+    
 module.exports = DienBienDaiHoi

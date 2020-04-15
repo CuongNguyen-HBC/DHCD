@@ -26,8 +26,8 @@ class DanhSachCauHoi extends Model{
         const connect = await this.pool.connect()
         const pool = await connect.request()
         pool.input('cauhoi',mssql.Int,id)
-        const result = await pool.query(`SELECT * FROM ${this.table} where id = @id`)
-        return result.recordset
+        const result = await pool.query(`SELECT * FROM ${this.table} where id = @cauhoi`)
+        return result.recordset[0]
     }
     async TanThanh(id){
         const connect = await this.pool.connect()
@@ -49,10 +49,17 @@ class DanhSachCauHoi extends Model{
         pool.input('cauhoi',mssql.Int,id)
         pool.input('bieuquyet',mssql.Int,bieuquyet)
         pool.input('madaibieu',mssql.NVarChar(200),madaibieu)
-        const check = await pool.query(`SELECT * FROM BieuQuyetCauHoi where Ma_Dai_Bieu = @madaibieu and CauHoi=@cauhoi`)
-        if(check.rowsAffected[0] <= 0)
-        pool.query(`INSERT INTO BieuQuyetCauHoi(Ma_Dai_Bieu,CauHoi,BieuQuyet) values(@madaibieu,@cauhoi,@bieuquyet)`)
-        else return false
+
+        const pool2 = await connect.request()
+        const check2 = await pool2.query(`select * FROM DanhSachDaiBieu a, DanhSachCauHoi b 
+        where a.created_at <= b.locked and b.id = '${id}' and a.Ma_Dai_Bieu = '${madaibieu}'`)
+        if(check2.rowsAffected >= 1){
+            const check = await pool.query(`SELECT * FROM BieuQuyetCauHoi where Ma_Dai_Bieu = @madaibieu and CauHoi=@cauhoi`)
+            if(check.rowsAffected[0] <= 0)
+            pool.query(`INSERT INTO BieuQuyetCauHoi(Ma_Dai_Bieu,CauHoi,BieuQuyet) values(@madaibieu,@cauhoi,@bieuquyet)`)
+            else return false
+        }
+        
     }
 }
 module.exports = DanhSachCauHoi

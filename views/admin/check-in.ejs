@@ -18,7 +18,7 @@
         <div class="col s11 mr-header">
             <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
                 <li class="tab"><a  class="active" href="#test1">Check in</a></li>
-                <li class="tab"><a href="#test2">Câu hỏi biểu quyết</a></li>
+                <li class="tab"><a href="#test2">Vấn đề biểu quyết</a></li>
                 
               </ul>
               
@@ -99,13 +99,16 @@
                   </div>
                   <div class="row">
                     <table class="checked striped" style="border:1px solid black">
+                      <caption><button class="btn waves-effect waves-light"  id='start-DaiHoi'>Bắt đầu đại hội
+                      </button></caption>
+                      
                       <thead>
                         <tr>
                           <th>Mã đại biểu</th>
                           <th>Tên đại biểu</th>
                           <th>Số cổ phiếu</th>
                           <th>Thời gian check in</th>
-                        
+                          <th>Thông tin đại biểu</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -116,21 +119,24 @@
                           <td><%= list[i].Ten_Dai_Bieu %></td>
                           <td><%= new Number(list[i].TongCP).toLocaleString('en-US') %></td>
                           <td><%= `${date.getUTCDate()}/${date.getUTCMonth()+1}/${date.getUTCFullYear()}` %></td>
-                         
+                          <td><a class="btn-floating pulse center-align" href="javascript: w=window.open('../template/phieu-thong-tin-dai-bieu/<%= list[i].Ma_Dai_Bieu %>'); w.print(); setTimeout(() => { w.close()},1000)"><i class="material-icons">print</i></a></td>
                         </tr>
                         <% }%>
                       </tbody>
+                      
                     </table>
                   </div>
                   
               </div>
               <div id="test2" class="col s12">
                 <div class="row">
+                
                   <table class="checked striped" style="border:1px solid black">
+                    
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Câu hỏi</th>
+                        <th>Vấn đề</th>
                         <th>Nội dung</th>
                         <th>Số phiếu hiện tại</th>
                         <th>Số đại biểu</th>
@@ -213,6 +219,21 @@
        success:function(data){
          socket.emit('thong-ke',data)
        }
+     })
+     $('#start-DaiHoi').click(event => {
+       event.preventDefault()
+       var instance = M.Modal.getInstance($('.modal'));
+       $.ajax({
+         type:'get',
+         url:'./bat-dau-dai-hoi',
+         beforeSend:() => {
+           instance.open()
+         },
+         complete: () => {
+
+          instance.close()
+         }
+       })
      })
     </script>
   </body>

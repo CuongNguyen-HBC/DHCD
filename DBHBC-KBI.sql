@@ -1,6 +1,5 @@
-﻿create database DaiHoiCoDong
-use DaiHoiCoDong
-drop database DaiHoiCoDong
+﻿create database DaiHoiCoDong_KBI
+use DaiHoiCoDong_KBI
 create table Users(
 username varchar(200) primary key,
 password nvarchar(255) not null,
@@ -25,10 +24,9 @@ Status int not null default(0),
 created_at Datetime not null default(GETDATE()),
 )
 
-
 create table DanhSachDaiBieu(
 ID int identity(1,1) not null,
-Ma_Dai_Bieu as 'HBC000' + convert(nvarchar,ID) ,
+Ma_Dai_Bieu as 'KBI000' + convert(nvarchar,ID) ,
 Ten_Dai_Bieu nvarchar(200) not null,
 CMND nvarchar(100) null unique,
 TongCP int not null default(0),
@@ -75,11 +73,11 @@ create table DienBienDaiHoi(
 id int identity(1,1) primary key,
 noidung nvarchar(20) unique not null,
 thoigian datetime not null default(getdate()),
-sophieu int not null default(0),
-sodaibieu int not null default(0)
+sophieu int not null default(0)
 )
+
 create table UngVienBauCu(
-id int identity(1,1) primary key,
+id int  primary key,
 hoten nvarchar(200) not null,
 sophieu int not null default(0),
 created_at datetime not null default(getdate())
@@ -90,7 +88,6 @@ madaibieu nvarchar(200) not null,
 sophieubau int not null default(0),
 created_at datetime not null default(getdate())
 )
-drop table KetQuaBauCu
 
 
 create trigger updateBauCu on KetQuaBauCu
